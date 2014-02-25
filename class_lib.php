@@ -1,12 +1,13 @@
 <?php
 	class paymenow{
+		protected $wsdlURL = 'https://trans.merchantpartners.com/Web/services/TransactionService?wsdl'; //DON'T CHANGE THIS
+		protected $acctid = 'TEST0';// CHANGE THIS ACCORDING TO THE ACCOUNT ID, THIS IS TEST
+		protected $subid = '';// ADD THIS IF ENABLED IN THE PAYMENOW CONSOLE
 		
 		private function createccinfo($formvars){
-			$acctid = 'TEST0';// CHANGE THIS ACCORDING TO THE ACCOUNT ID, THIS IS TEST
-			$subid = '';// ADD THIS IF ENABLED IN THE PAYMENOW CONSOLE
 			$param = array(
-				'acctid' => $acctid,
-				'subid' => $subid,
+				'acctid' => $this->acctid,
+				'subid' => $this->subid,
 				'ccname' => $formvars['ccname'],
 				'ccnum' => $formvars['ccnum'],
 				'amount' => $formvars['amount'],
@@ -21,8 +22,7 @@
 		
 		public function callWebService($formvalues){
 			require 'nusoap/lib/nusoap.php';
-			$wsdlURL = 'https://trans.merchantpartners.com/Web/services/TransactionService?wsdl'; //DON'T CHANGE THIS
-			$client = new nusoap_client($wsdlURL,'wsdl');
+			$client = new nusoap_client($this->wsdlURL,'wsdl');
 			$error = $client->getError();
 			if($error){
 				$result = array(
